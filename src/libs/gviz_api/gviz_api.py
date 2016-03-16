@@ -497,11 +497,15 @@ class DataTable(object):
     if (len(table_description) != 1 or
         (isinstance(table_description.keys()[0], types.StringTypes) and
          isinstance(table_description.values()[0], tuple) and
-         len(table_description.values()[0]) < 4)):
+         len(table_description.values()[0]) < 4) or
+          table_description['column_order']):
       # This is the most inner dictionary. Parsing types.
       columns = []
       # We sort the items, equivalent to sort the keys since they are unique
-      for key, value in sorted(table_description.items()):
+      # for key, value in sorted(table_description.items()):
+      for col in table_description['column_order']:
+        key = col
+        value = table_description[key]
         # We parse the column type as (key, type) or (key, type, label) using
         # ColumnTypeParser.
         if isinstance(value, tuple):

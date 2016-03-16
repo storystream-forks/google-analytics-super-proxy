@@ -46,14 +46,19 @@ from libs.gviz_api import gviz_api
 # The label to use for unknown data types.
 UNKNOWN_LABEL = 'UNKNOWN'
 
+
+def string_encoder(string):
+    return string.encode('UTF-8')
+
 # Maps the types used in a Core Reporting API response to Python types.
 BUILTIN_DATA_TYPES = {
-    'STRING': str,
+    'STRING': string_encoder,
     'INTEGER': int,
     'FLOAT': float,
     'CURRENCY': float,
-    UNKNOWN_LABEL: str
+    UNKNOWN_LABEL: string_encoder
 }
+
 
 # Maps the types used in a Core Reporting API response to JavaScript types.
 JS_DATA_TYPES = {
@@ -436,7 +441,7 @@ def GetDataTableSchema(content, data_types=None):
 
   Args:
     content: A dict representing the Core Reporting API JSON response to build
-             a schmea from.
+             a schema from.
     data_types: A dict that maps the expected data types in the content to
                 the equivalent JavaScript types. e.g.:
                 {
@@ -461,7 +466,7 @@ def GetDataTableSchema(content, data_types=None):
   schema = None
 
   if column_headers:
-    schema = {}
+    schema = {'column_order': []}
     for header in column_headers:
       name = header.get('name', UNKNOWN_LABEL).encode('UTF-8')
       data_type = header.get('dataType', UNKNOWN_LABEL)
@@ -469,6 +474,7 @@ def GetDataTableSchema(content, data_types=None):
       schema.update({
           name: (data_type, name),
       })
+      schema['column_order'].append(name)
   return schema
 
 

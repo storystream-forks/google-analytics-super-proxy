@@ -33,15 +33,24 @@ __author__ = 'pete.frisella@gmail.com (Pete Frisella)'
 
 # OAuth 2.0 Client Settings
 AUTH_CONFIG = {
-    'OAUTH_CLIENT_ID': 'REPLACE THIS WITH YOUR CLIENT ID',
-    'OAUTH_CLIENT_SECRET': 'REPLACE THIS WITH YOUR CLIENT SECRET',
+    # Dev Settings
+    #
+    'OAUTH_CLIENT_ID': '1053809761716-fuahhrtknm0mc3sd1akf2ndfr30fbdtv.apps.googleusercontent.com',
+    'OAUTH_CLIENT_SECRET': 'UDoL_IkC4UalLsNDi2GhcB91',
 
-    # E.g. Local Dev Env on port 8080: http://localhost:8080
-    # E.g. Hosted on App Engine: https://your-application-id.appspot.com
-    'OAUTH_REDIRECT_URI': '%s%s' % (
-        'https://REPLACE_THIS_WITH_YOUR_APPLICATION_NAME.appspot.com OR http://localhost:8080',
+    'OAUTH_REDIRECT_URI': '{}{}'.format(
+        'http://localhost:8080',
         '/admin/auth')
+    #
+    # Live Settings
+    #
+    # 'OAUTH_CLIENT_ID': '1053809761716-v93eteokbuucocjick35s5lhqji0nvb6.apps.googleusercontent.com',
+    # 'OAUTH_CLIENT_SECRET': 'Lk7TMmZWPOgf23aL2tYTQ2CL',
+    #
+    # 'OAUTH_REDIRECT_URI': '{}{}'.format(
+    #     'https://storystream-analytics.appspot.com',
+    #     '/admin/auth')
 }
 
 # XSRF Settings
-XSRF_KEY = 'REPLACE THIS WITH A SECRET PHRASE THAT SHOULD NOT BE SHARED'
+XSRF_KEY = 'actualbananagrouppossibly'

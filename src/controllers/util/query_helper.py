@@ -146,8 +146,9 @@ def BuildApiQuery(name, request, refresh_interval, **kwargs):
   Returns:
     An API Query object configured using the passed in parameters.
   """
-  current_user = users_helper.GetGaSuperProxyUser(
-      users.get_current_user().user_id())
+  # current_user = users_helper.GetGaSuperProxyUser(
+  #     users.get_current_user().user_id())
+  current_user = users_helper.GetGaSuperProxyUser('110106107521415623616')
   modified = datetime.utcnow()
   api_query = db_models.ApiQuery(name=name,
                                  request=request,
@@ -181,6 +182,9 @@ def DeleteApiQuery(api_query):
 
     request_timestamp_key = co.REQUEST_TIMESTAMP_KEY_TEMPLATE.format(query_id)
     request_timestamp_shard.DeleteTimestamp(request_timestamp_key)
+
+    return True
+  return False
 
 
 def DeleteApiQueryErrors(api_query):
@@ -266,6 +270,7 @@ def ExecuteApiQueryTask(api_query):
 @analytics_auth_helper.AuthorizeApiQuery
 def FetchApiQueryResponse(api_query):
   try:
+    api_query.request = urllib.quote(api_query.request, safe="%/:=&?~#+!$,;'@()*[]")
     response = urlfetch.fetch(url=api_query.request, deadline=60)
     response_content = json.loads(response.content)
   except (ValueError, TypeError, AttributeError, urlfetch.Error), e:
@@ -484,7 +489,6 @@ def ListApiQueries(user=None, limit=1000):
     api_query = db_models.ApiQuery.all()
     api_query.order('name')
     return api_query.run(limit=limit)
-  return None
 
 
 def RefreshApiQueryResponse(api_query):
@@ -537,7 +541,7 @@ def SaveApiQueryResponse(api_query, content):
 
   Args:
     api_query: The API Query for which the response will be added to
-    content: The content of the API respone to add to the API Query.
+    content: The content of the API response to add to the API Query.
   """
   db_response = api_query.api_query_responses.get()
   modified = datetime.utcnow()

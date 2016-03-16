@@ -130,3 +130,26 @@ def UserOwnsApiQuery(query_id):
   if user and user.user_id() and api_query:
     return user.user_id() == api_query.user.key().name()
   return False
+
+
+def AccessTokenValid(original_request):
+    """ Check if the access token provided is valid
+
+    Args:
+        original_request: The restricted request to the management api
+
+    Returns:
+        The wrapped request
+    """
+    def Wrapper(self, *args, **kwargs):
+        """ Access Tokens must be provided in the headers of the request being made
+        """
+        access_token = self.request.headers.get('access-token')
+        access_token_is_valid = access_token in co.MANAGEMENT_TOKENS
+        if access_token_is_valid:
+            return original_request(self, *args, **kwargs)
+        else:
+            self.redirect(co.LINKS['management_default'])
+            return
+
+    return Wrapper

@@ -1,4 +1,4 @@
-application: your-application-id
+application: storystream-analytics
 version: 1
 runtime: python27
 api_version: 1
@@ -14,18 +14,22 @@ handlers:
 - url: /static
   static_dir: static
   login: required
-  secure: always
+  secure: never
 
 - url: /admin/proxy/.*
   script: controllers.admin.app
   login: admin
-  secure: always
+  secure: never
 
 - url: /admin.*
   script: controllers.owner.app
   login: required
-  secure: always
+  secure: never
+
+- url: /management.*
+  script: controllers.management.app
+  secure: never
 
 - url: /.*
   script: controllers.public.app
-  secure: optional
+  secure: never
