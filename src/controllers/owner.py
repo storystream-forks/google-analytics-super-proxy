@@ -100,8 +100,7 @@ class AdminHandler(base.BaseHandler):
                                                                  hostname),
         'query_error_limit': co.QUERY_ERROR_LIMIT,
         'revoke_token_url': '%s?revoke=true' % co.LINKS['owner_auth'],
-        'oauth_url': analytics_auth_helper.OAUTH_URL,
-        'user': user
+        'oauth_url': analytics_auth_helper.OAUTH_URL
     }
     self.RenderHtmlTemplate('admin.html', template_values)
 

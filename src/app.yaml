@@ -14,22 +14,22 @@ handlers:
 - url: /static
   static_dir: static
   login: required
-  secure: never
+  secure: always
 
 - url: /admin/proxy/.*
   script: controllers.admin.app
   login: admin
-  secure: never
+  secure: always
 
 - url: /admin.*
   script: controllers.owner.app
   login: required
-  secure: never
+  secure: always
 
 - url: /management.*
   script: controllers.management.app
-  secure: never
+  secure: always
 
 - url: /.*
   script: controllers.public.app
-  secure: never
+  secure: optional
